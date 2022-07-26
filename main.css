@@ -1,0 +1,113 @@
+:root {
+  --primary-color: rgba(193, 139, 65, 0.75);
+  --primary-color-offset: rgba(198, 137, 51, 0.95);
+  --secondary-color: rgba(155, 74, 8, 0.9);
+  --light-on-color: #fcfcfc;
+  --light-off-color: rgba(70, 43, 24);
+  --gradient-background: linear-gradient(135deg, #fff8de, #eed9aa);
+  --gradient-birthday: linear-gradient(135deg, #2779ff, #9c4fc5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--light-off-color);
+}
+
+.container {
+  height: 100vh;
+  position: relative;
+  background-color: var(--secondary-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4rem;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  background: var(--secondary-color);
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  transition: opacity 0.3s ease-in-out;
+  text-decoration: none;
+}
+
+.btn:hover {
+  opacity: 0.7;
+}
+
+.clock {
+  width: 600px;
+  height: 600px;
+  background-color: var(--primary-color);
+  display: grid;
+  padding: 3rem;
+  grid-template-columns: repeat(13, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+}
+
+.letter-light {
+  color: var(--light-on-color);
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 0.5rem var(--light-on-color),
+      0 0 1rem var(--light-on-color), 0 0 1.5rem var(--primary-color),
+      0 0 2rem var(--primary-color), 0 0 2.5rem var(--primary-color),
+      0 0 3rem var(--primary-color), 0 0 3.5rem var(--primary-color);
+  }
+  to {
+    text-shadow: 0 0 1rem var(--light-on-color),
+      0 0 1.5rem var(--primary-color-offset),
+      0 0 2rem var(--primary-color-offset),
+      0 0 2.5rem var(--primary-color-offset),
+      0 0 3rem var(--primary-color-offset),
+      0 0 3.5rem var(--primary-color-offset),
+      0 0 4rem var(--primary-color-offset);
+  }
+}
+
+.letter-birthday {
+  background: var(--gradient-birthday);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: celebration 1s ease-in-out infinite alternate;
+  -moz-animation: celebration 1s ease-in-out infinite alternate;
+  animation: celebration 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes celebration {
+  from {
+    text-shadow: 0 0 0.5rem #2779ff, 0 0 1rem #2779ff, 0 0 1.5rem #9c4fc5,
+      0 0 2rem #9c4fc5, 0 0 2.5rem #9c4fc5, 0 0 3rem #9c4fc5, 0 0 3.5rem #9c4fc5;
+  }
+  to {
+    text-shadow: 0 0 1rem #2779ff, 0 0 1.5rem rgba(156, 79, 197, 0.85),
+      0 0 2rem rgba(156, 79, 197, 0.85), 0 0 2.5rem rgba(156, 79, 197, 0.85),
+      0 0 3rem rgba(156, 79, 197, 0.85), 0 0 3.5rem rgba(156, 79, 197, 0.85),
+      0 0 4rem rgba(156, 79, 197, 0.85);
+  }
+}
