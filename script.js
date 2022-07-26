@@ -237,7 +237,6 @@ const clock = function () {
     }, 1000 * 59 + 900);
   });
 
-  // TODO: REMOVE THIS SECTION AFTER IMPLEMENTING FORM
   // check birthday
   if (currentDay === userBirthDay && currentMonth === userBirthMonth) {
     birthdayArr.push(...userNameClockArr);
