@@ -1,24 +1,31 @@
 'use strict';
 ////////////////////
-//Data
-const birthDateMannu = new Date(1989, 8, 15);
-const birthMonthMannu = birthDateMannu.getMonth() + 1;
-const birthDayMannu = birthDateMannu.getDate();
-// console.log(birthDateMannu);
-// console.log(birthMonthMannu);
-// console.log(birthDayMannu);
-const birthDateSonia = new Date(1994, 10, 7);
-const birthMonthSonia = birthDateSonia.getMonth() + 1;
-const birthDaySonia = birthDateSonia.getDate();
-// console.log(birthDateSonia);
-// console.log(birthMonthSonia);
-// console.log(birthDaySonia);
+//Test Data
+// const birthDateMannu = new Date(1989, 8, 15);
+// const birthMonthMannu = birthDateMannu.getMonth() + 1;
+// const birthDayMannu = birthDateMannu.getDate();
+// const birthDateSonia = new Date(1994, 10, 7);
+// const birthMonthSonia = birthDateSonia.getMonth() + 1;
+// const birthDaySonia = birthDateSonia.getDate();
+
 ////////////////////
-//Elements
+//Toggle Element
+const toggle = document.querySelector('.toggler');
+const btnGear = document.querySelector('.btn-gear');
+
+//Form Elements
+const form = document.querySelector('.form');
+const nameEl = document.querySelector('#fName');
+const birthdateEl = document.querySelector('#birthday');
+const btnSubmit = document.querySelector('.btn-submit');
+const warning = document.querySelector('.warning-message');
+
+//Clock Elements
 const itEl = document.querySelectorAll('.light-it');
 const isEl = document.querySelectorAll('.light-is');
 const tenMinEl = document.querySelectorAll('.light-ten-m');
 const halfEl = document.querySelectorAll('.light-half');
+const aEl = document.querySelector('.light-a');
 const quarterEl = document.querySelectorAll('.light-quarter');
 const twentyEl = document.querySelectorAll('.light-twenty');
 const fiveMinEl = document.querySelectorAll('.light-five-m');
@@ -40,12 +47,7 @@ const tenHourEl = document.querySelectorAll('.light-ten-h');
 const twelveEl = document.querySelectorAll('.light-twelve');
 const oclockEl = document.querySelectorAll('.light-oclock');
 
-const mannuEl = document.querySelectorAll('.light-mannu');
-const soniaEl = document.querySelectorAll('.light-sonia');
-
-// const btnCheckClock = document.querySelector('.btn-clock');
-
-//TODO: make clock persist even when user changes tabs on browser
+const nameClockEl = document.querySelectorAll('.light-name');
 
 ////////////////////
 //Helpers
@@ -60,20 +62,81 @@ const convertWordToLetters = string =>
     return curr;
   }, []);
 
+const convertUTCToLocal = dateEntry => {
+  const utcTime = new Date(dateEntry);
+  const timezoneOffset = utcTime.getTimezoneOffset() * 60 * 1000;
+  const localTime = new Date(utcTime.getTime() + timezoneOffset);
+  return localTime;
+};
+
+const addCharToArray = (array, char) => array.push(char);
+
+const resetForm = () => {
+  //clear input fields
+  nameEl.value = birthdateEl.value = '';
+  //close form
+  toggle.checked = false;
+};
+
 ////////////////////////
-//Clock
+//Form Feature
+/* TODO: disable submit button if input fields are not all filled */
+let userBirthDay = '';
+let userBirthMonth = '';
+const userNameClockArr = [];
+
+btnSubmit.addEventListener('click', e => {
+  e.preventDefault();
+  //clear warning message
+  warning.innerText = '';
+  //get user name and birthdate
+  const userNameEntry = nameEl.value.toUpperCase();
+  const userBirthdateEntry = birthdateEl.value;
+  //validation
+  // TODO: have more validation rules i.e. no spaces, symbols, or numbers
+  if (userNameEntry === '' || userBirthdateEntry === '') {
+    return (warning.innerText = 'Must enter name and birthdate.');
+  }
+  if (userNameEntry.length > 7) {
+    return (warning.innerText = 'Must enter a name with 7 letters or less');
+  }
+
+  //TODO: store in local storage to persist through browser refresh
+  const userBirthdate = convertUTCToLocal(userBirthdateEntry);
+  userBirthDay = userBirthdate.getDate();
+  userBirthMonth = userBirthdate.getMonth() + 1;
+  const userNameArr = [];
+
+  //iterate through name to get characters
+  [...userNameEntry].forEach(char => addCharToArray(userNameArr, char));
+
+  //iterate through light-name divs and insert chars
+  nameClockEl.forEach((el, i) => {
+    if (i < userNameArr.length) {
+      el.innerText = userNameArr[i];
+      userNameClockArr.push(el);
+    }
+  });
+  //call clock() method
+  clock();
+  //reset and close form
+  resetForm();
+});
+
+////////////////////////
+//Clock Feature
 const lookupMin = [
-  ['fivePast', [...fiveMinEl, ...pastEl]],
-  ['tenPast', [...tenMinEl, ...pastEl]],
-  ['quarterPast', [...quarterEl, ...pastEl]],
-  ['twentyPast', [...twentyEl, ...pastEl]],
-  ['twentyFivePast', [...twentyEl, ...fiveMinEl, ...pastEl]],
+  ['fivePast', [...fiveMinEl, ...pastEl, ...minutesEl]],
+  ['tenPast', [...tenMinEl, ...pastEl, ...minutesEl]],
+  ['quarterPast', [...quarterEl, ...pastEl, aEl]],
+  ['twentyPast', [...twentyEl, ...pastEl, ...minutesEl]],
+  ['twentyFivePast', [...twentyEl, ...fiveMinEl, ...pastEl, ...minutesEl]],
   ['halfPast', [...halfEl, ...pastEl]],
-  ['twentyFiveTo', [...twentyEl, ...fiveMinEl, ...toEl]],
-  ['twentyTo', [...twentyEl, ...toEl]],
-  ['quarterTo', [...quarterEl, ...toEl]],
-  ['tenTo', [...tenMinEl, ...toEl]],
-  ['fiveTo', [...fiveMinEl, ...toEl]],
+  ['twentyFiveTo', [...twentyEl, ...fiveMinEl, ...toEl, ...minutesEl]],
+  ['twentyTo', [...twentyEl, ...toEl, ...minutesEl]],
+  ['quarterTo', [...quarterEl, ...toEl, aEl]],
+  ['tenTo', [...tenMinEl, ...toEl, ...minutesEl]],
+  ['fiveTo', [...fiveMinEl, ...toEl, ...minutesEl]],
 ];
 
 const lookupHour = [
@@ -129,7 +192,7 @@ const clock = function () {
 
   //check minutes
   switch (roundNearestFive(currentMin)) {
-    case 0:
+    case 0 || 60:
       currentTimeArr.push(...oclockEl);
       break;
     case 5:
@@ -174,12 +237,10 @@ const clock = function () {
     }, 1000 * 59 + 900);
   });
 
-  //   check birthday
-  if (currentDay === birthDayMannu && currentMonth === birthMonthMannu) {
-    birthdayArr.push(...mannuEl);
-    birthdayArr.push(...birthdayEl);
-  } else if (currentDay === birthDaySonia && currentMonth === birthMonthSonia) {
-    birthdayArr.push(...soniaEl);
+  // TODO: REMOVE THIS SECTION AFTER IMPLEMENTING FORM
+  // check birthday
+  if (currentDay === userBirthDay && currentMonth === userBirthMonth) {
+    birthdayArr.push(...userNameClockArr);
     birthdayArr.push(...birthdayEl);
   }
 

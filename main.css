@@ -2,10 +2,12 @@
   --primary-color: rgba(193, 139, 65, 0.75);
   --primary-color-offset: rgba(198, 137, 51, 0.95);
   --secondary-color: rgba(155, 74, 8, 0.9);
+  --overlay-color: rgba(24, 39, 51, 0.85);
   --light-on-color: #fcfcfc;
   --light-off-color: rgba(70, 43, 24);
   --gradient-background: linear-gradient(135deg, #fff8de, #eed9aa);
   --gradient-birthday: linear-gradient(135deg, #2779ff, #9c4fc5);
+  --form-speed: 0.75s;
 }
 
 * {
@@ -22,7 +24,150 @@ body {
   color: var(--light-off-color);
 }
 
-.container {
+.controls-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.controls-wrap .toggler {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+  opacity: 0;
+}
+
+/* TODO: Color of btns need to be revisited */
+.controls-wrap .btn-gear {
+  position: absolute;
+  color: var(--light-on-color);
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 1rem;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+}
+
+/* Toggler Animation */
+.controls-wrap .toggler:hover + .btn-gear > i {
+  transform: scale(1.1, 1.1);
+}
+
+.controls-wrap .toggler:hover + .btn-xmark > i {
+  transform: scale(1.1, 1.1);
+}
+
+/* Show Form */
+
+.controls-wrap .toggler:checked ~ .form-container {
+  visibility: visible;
+}
+
+.controls-wrap .toggler:checked ~ .form-container > div {
+  transform: scale(1);
+  transition-duration: var(--form-speed);
+}
+
+.controls-wrap .toggler:checked ~ .form-container > div > div {
+  opacity: 1;
+  transition: opacity 0.4s ease 0.4s;
+}
+
+.controls-wrap .form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.controls-wrap .form-container > div {
+  background: var(--overlay-color);
+  border-radius: 50%;
+  width: 300vw;
+  height: 300vw;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0);
+  transition: all 0.4s ease;
+}
+
+.controls-wrap .form-container > div > div {
+  text-align: center;
+  max-width: 90vw;
+  max-height: 100vh;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.controls-wrap .form-container .form > label,
+.btn {
+  color: var(--light-on-color);
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.controls-wrap .form-container .form > #fName,
+#birthday {
+  color: black;
+  font-family: inherit;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  font-weight: 400;
+  padding: 1rem;
+  height: 1.5rem;
+  border: none;
+}
+
+.controls-wrap .form-container .form > #fName {
+  width: 12rem;
+}
+
+.btn {
+  border: none;
+  background-color: var(--overlay-color);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover:enabled {
+  background-color: #2f3c47;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+}
+
+.controls-wrap .form-container .form .warning-message {
+  font-size: 1rem;
+  color: tomato;
+}
+
+/* Clock */
+
+.clock-container {
   height: 100vh;
   position: relative;
   background-color: var(--secondary-color);
@@ -31,28 +176,6 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-}
-
-.controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 4rem;
-}
-
-.btn {
-  display: inline-block;
-  border: none;
-  background: var(--secondary-color);
-  color: #fff;
-  font-size: 1.5rem;
-  padding: 0.75rem 1.5rem;
-  transition: opacity 0.3s ease-in-out;
-  text-decoration: none;
-}
-
-.btn:hover {
-  opacity: 0.7;
 }
 
 .clock {

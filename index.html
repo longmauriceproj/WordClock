@@ -4,15 +4,44 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    />
     <link rel="stylesheet" href="main.css" />
     <script defer src="script.js"></script>
     <title>Word Clock</title>
   </head>
   <body>
-    <div class="container">
-      <!-- <div class="controls">
-        <button class="btn btn-clock">Click Me</button>
-      </div> -->
+    <div class="controls-wrap">
+      <input type="checkbox" class="toggler" />
+      <div class="btn-gear"><i class="fa-solid fa-gear"></i></div>
+      <div class="form-container">
+        <div>
+          <div>
+            <form class="form">
+              <label for="fname">First name:</label><br />
+              <input
+                type="text"
+                name="fname"
+                id="fName"
+                class="form-input"
+              /><br />
+              <label for="birthday">Birthday:</label><br />
+              <input
+                type="date"
+                name="birthday"
+                id="birthday"
+                class="form-input"
+              /><br />
+              <button type="submit" class="btn btn-submit">Submit</button><br />
+              <label for="message" class="warning-message"></label>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clock-container">
       <section class="clock">
         <div class="letter light-it">I</div>
         <div class="letter light-it">T</div>
@@ -24,7 +53,7 @@
         <div class="letter light-ten-m">E</div>
         <div class="letter light-ten-m">N</div>
         <div class="letter light-half">H</div>
-        <div class="letter light-half">A</div>
+        <div class="letter light-half light-a">A</div>
         <div class="letter light-half">L</div>
         <div class="letter light-half">F</div>
         <div class="letter light-quarter">Q</div>
@@ -95,11 +124,11 @@
         <div class="letter light-two">T</div>
         <div class="letter light-two">W</div>
         <div class="letter light-two">O</div>
-        <div class="letter light-mannu">M</div>
-        <div class="letter light-mannu">A</div>
-        <div class="letter light-mannu">N</div>
-        <div class="letter light-mannu">N</div>
-        <div class="letter light-mannu">U</div>
+        <div class="letter">M</div>
+        <div class="letter">N</div>
+        <div class="letter">A</div>
+        <div class="letter">N</div>
+        <div class="letter">U</div>
         <div class="letter light-eight">E</div>
         <div class="letter light-eight">I</div>
         <div class="letter light-eight">G</div>
@@ -121,13 +150,13 @@
         <div class="letter light-six">S</div>
         <div class="letter light-six">I</div>
         <div class="letter light-six">X</div>
-        <div class="letter light-sonia">S</div>
-        <div class="letter light-sonia">O</div>
-        <div class="letter light-sonia">N</div>
-        <div class="letter light-sonia">I</div>
-        <div class="letter light-sonia">A</div>
-        <div class="letter">E</div>
-        <div class="letter">Y</div>
+        <div class="letter light-name">S</div>
+        <div class="letter light-name">N</div>
+        <div class="letter light-name">A</div>
+        <div class="letter light-name">I</div>
+        <div class="letter light-name">O</div>
+        <div class="letter light-name">E</div>
+        <div class="letter light-name">Y</div>
         <div class="letter light-ten-h">T</div>
         <div class="letter light-ten-h">E</div>
         <div class="letter light-ten-h">N</div>
