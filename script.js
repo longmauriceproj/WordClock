@@ -81,7 +81,7 @@ const setNameInClock = (arrayName, arrayClockOld, arrayClockNew) => {
 let userBirthdate = '';
 let userBirthDay = '';
 let userBirthMonth = '';
-const userNameArr = [];
+let userNameArr = [];
 const userNameClockArr = [];
 
 //IIFE to check local storage
