@@ -1,0 +1,12 @@
+body {
+  font-size: 1.3rem;
+}
+
+.clock {
+  padding: 2rem;
+}
+
+.clock:after {
+  content: '';
+  padding-bottom: 100%;
+}
