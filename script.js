@@ -1,15 +1,7 @@
 'use strict';
-////////////////////
-//Test Data
-// const birthDateMannu = new Date(1989, 8, 15);
-// const birthMonthMannu = birthDateMannu.getMonth() + 1;
-// const birthDayMannu = birthDateMannu.getDate();
-// const birthDateSonia = new Date(1994, 10, 7);
-// const birthMonthSonia = birthDateSonia.getMonth() + 1;
-// const birthDaySonia = birthDateSonia.getDate();
 
 ////////////////////
-//Toggle Element
+//Toggle Elements
 const toggle = document.querySelector('.toggler');
 const btnGear = document.querySelector('.btn-gear');
 
@@ -78,12 +70,39 @@ const resetForm = () => {
   toggle.checked = false;
 };
 
+const setNameInClock = (arrayName, arrayClockOld, arrayClockNew) => {
+  arrayClockOld.forEach((el, i) => {
+    el.innerText = arrayName[i];
+    arrayClockNew.push(el);
+  });
+};
+
+////////////////////////
+let userBirthdate = '';
+let userBirthDay = '';
+let userBirthMonth = '';
+const userNameArr = [];
+const userNameClockArr = [];
+
+//IIFE to check local storage
+(() => {
+  //get data from localStorage
+  const data = JSON.parse(localStorage.getItem('userInfo'));
+  //guard clause
+  if (!data) return;
+  //iterate through name and save each char in new array
+  [...data.name].forEach(char => addCharToArray(userNameArr, char));
+  //iterate through light-name divs and insert chars
+  setNameInClock(userNameArr, nameClockEl, userNameClockArr);
+  //shape birthday data
+  userBirthdate = new Date(data.birthday);
+  userBirthDay = userBirthdate.getDate();
+  userBirthMonth = userBirthdate.getMonth() + 1;
+})();
+
 ////////////////////////
 //Form Feature
 /* TODO: disable submit button if input fields are not all filled */
-let userBirthDay = '';
-let userBirthMonth = '';
-const userNameClockArr = [];
 
 btnSubmit.addEventListener('click', e => {
   e.preventDefault();
@@ -101,22 +120,27 @@ btnSubmit.addEventListener('click', e => {
     return (warning.innerText = 'Must enter a name with 7 letters or less');
   }
 
-  //TODO: store in local storage to persist through browser refresh
-  const userBirthdate = convertUTCToLocal(userBirthdateEntry);
+  userBirthdate = convertUTCToLocal(userBirthdateEntry);
   userBirthDay = userBirthdate.getDate();
   userBirthMonth = userBirthdate.getMonth() + 1;
-  const userNameArr = [];
+  //remove all items from localStorage
+  localStorage.clear();
+
+  //store in local storage to persist data
+  const userInfo = {};
+  userInfo.name = userNameEntry;
+  userInfo.birthday = userBirthdate;
+  console.log(userInfo);
+
+  localStorage.setItem('userInfo', JSON.stringify(userInfo));
+  //reset userNameArr to empty array (in case there was data from local storage)
+  userNameArr = [];
 
   //iterate through name to get characters
   [...userNameEntry].forEach(char => addCharToArray(userNameArr, char));
 
   //iterate through light-name divs and insert chars
-  nameClockEl.forEach((el, i) => {
-    if (i < userNameArr.length) {
-      el.innerText = userNameArr[i];
-      userNameClockArr.push(el);
-    }
-  });
+  setNameInClock(userNameArr, nameClockEl, userNameClockArr);
   //call clock() method
   clock();
   //reset and close form
@@ -229,7 +253,7 @@ const clock = function () {
       currentTimeArr.push(...convertWordToLetters('fiveTo'));
       break;
   }
-
+  //TODO: make helper function. Keep code DRY
   currentTimeArr.forEach(element => {
     element.classList.add('letter-light');
     setTimeout(() => {
