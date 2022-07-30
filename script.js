@@ -72,8 +72,10 @@ const resetForm = () => {
 
 const setNameInClock = (arrayName, arrayClockOld, arrayClockNew) => {
   arrayClockOld.forEach((el, i) => {
-    el.innerText = arrayName[i];
-    arrayClockNew.push(el);
+    if (i < arrayName.length) {
+      el.innerText = arrayName[i];
+      arrayClockNew.push(el);
+    }
   });
 };
 
@@ -139,6 +141,7 @@ btnSubmit.addEventListener('click', e => {
   //iterate through name to get characters
   [...userNameEntry].forEach(char => addCharToArray(userNameArr, char));
 
+  console.log(userNameArr);
   //iterate through light-name divs and insert chars
   setNameInClock(userNameArr, nameClockEl, userNameClockArr);
   //call clock() method
