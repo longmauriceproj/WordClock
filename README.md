@@ -5,10 +5,12 @@ Using only vanilla JS, HTML5, CSS3.
 
 Version 1: To-Do-List:
 1. Refactor code to use classes and generally clean up code.
-2. Add media query to make site responsive.
+2. ~~Add media query to make site responsive.~~
 3. Add more validation rules.
 4. Change birthday glow to RGB.
 5. Disable submit button if input fields are not all filled
-6. store information in local storage to persist through browser refresh/leaving site.
+6. ~~store information in local storage to persist through browser refresh/leaving site.~~
+
+Bug: Short names will still populate characters in clock with undefined.
 
 Version 2: Recreate project using React.
